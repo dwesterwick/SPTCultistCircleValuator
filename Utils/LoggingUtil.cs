@@ -1,4 +1,4 @@
-﻿namespace SPTCultistCircleValuator
+﻿namespace SPTCultistCircleValuator.Utils
 {
     internal class LoggingUtil
     {

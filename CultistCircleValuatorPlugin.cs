@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using Comfort.Common;
+using SPTCultistCircleValuator.Utils;
 using System;
 
 namespace SPTCultistCircleValuator
@@ -7,16 +8,18 @@ namespace SPTCultistCircleValuator
     [BepInPlugin("com.danw.cultistcirclevaluator", "CultistCircleValuator", "1.0.0")]
     public class CultistCircleValuatorPlugin : BaseUnityPlugin
     {
-        internal static LocalizedTextLocatorComponent LocalizedTextLocator = null!;
+        internal static Components.LocalizedTextLocatorComponent LocalizedTextLocator = null!;
 
         protected void Awake()
         {
             Logger.LogInfo("Loading CultistCircleValuator...");
 
             Singleton<LoggingUtil>.Create(new LoggingUtil(Logger));
+            Singleton<CultistCircleTextLabelUtil>.Create(new CultistCircleTextLabelUtil());
 
-            LocalizedTextLocator = this.GetOrAddComponent<LocalizedTextLocatorComponent>();
-            new HideoutCircleOfCultistsScreenShowPatch().Enable();
+            LocalizedTextLocator = this.GetOrAddComponent<Components.LocalizedTextLocatorComponent>();
+            new Patches.ShowScreenPatch().Enable();
+            new Patches.SetInteractivityAndFinishCraftPatch().Enable();
 
             Singleton<LoggingUtil>.Instance.LogInfo("Loading CultistCircleValuator...done.");
         }

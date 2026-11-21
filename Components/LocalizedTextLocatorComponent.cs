@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace SPTCultistCircleValuator
+namespace SPTCultistCircleValuator.Components
 {
     internal class LocalizedTextLocatorComponent : MonoBehaviour
     {
