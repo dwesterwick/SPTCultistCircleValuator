@@ -18,7 +18,9 @@ namespace SPTCultistCircleValuator
             Singleton<CultistCircleTextLabelUtil>.Create(new CultistCircleTextLabelUtil());
 
             LocalizedTextLocator = this.GetOrAddComponent<Components.LocalizedTextLocatorComponent>();
+
             new Patches.ShowScreenPatch().Enable();
+            new Patches.HideScreenPatch().Enable();
             new Patches.SetInteractivityAndFinishCraftPatch().Enable();
 
             Singleton<LoggingUtil>.Instance.LogInfo("Loading CultistCircleValuator...done.");
