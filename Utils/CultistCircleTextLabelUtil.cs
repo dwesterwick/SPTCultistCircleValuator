@@ -82,12 +82,18 @@ namespace SPTCultistCircleValuator.Utils
 
                 if ((itemPrice == 0) || (itemPrice == float.NaN))
                 {
+                    Singleton<LoggingUtil>.Instance.LogWarning("Handbook price for " + item.LocalizedName() + " is not valid; trying trader price instead...");
+
                     itemPrice = await GetTraderPrice(item, session, cancellationToken);
                 }
 #if DEBUG
                 else
                 {
-                    _ = GetTraderPrice(item, session, cancellationToken);
+                    double traderPrice = await GetTraderPrice(item, session, cancellationToken);
+                    if (traderPrice != itemPrice)
+                    {
+                        Singleton<LoggingUtil>.Instance.LogWarning("Handbook price for " + item.LocalizedName() + " does not match trader price");
+                    }
                 }
 #endif
 
@@ -99,7 +105,12 @@ namespace SPTCultistCircleValuator.Utils
                 return;
             }
 
-            SetAdditionalText(": " + Math.Round(totalValue / 1000.0, 0).ToString() + "k ₽");
+            double valueInThousands = Math.Round(totalValue / 1000.0, 0);
+
+            string valueText = $"{valueInThousands}k ₽";
+            string valueTextColored = valueText.SetColor(totalValue.ColorFromValue());
+
+            SetAdditionalText($": {valueTextColored}");
 
             pendingUpdateStashValueTasks.Clear();
         }
@@ -119,7 +130,7 @@ namespace SPTCultistCircleValuator.Utils
                 }
 
                 double traderPrice = PriceCalculator.CalculateBasePriceForAllItems(item, 0, trader._supplyData, trader.Settings.BuyerUp);
-                Singleton<LoggingUtil>.Instance.LogInfo(trader.LocalizedName + " price for " + item.LocalizedName() + ": " + traderPrice);
+                Singleton<LoggingUtil>.Instance.LogDebug(trader.LocalizedName + " price for " + item.LocalizedName() + ": " + traderPrice);
 
                 return traderPrice;
             }
@@ -146,16 +157,16 @@ namespace SPTCultistCircleValuator.Utils
                 if (handbookEntries.Any())
                 {
                     handbookPrice = handbookEntries.First().Price;
-                    Singleton<LoggingUtil>.Instance.LogInfo("Handbook price for " + containedItem.LocalizedName() + ": " + handbookPrice);
+
+#if DEBUG
+                    Singleton<LoggingUtil>.Instance.LogDebug("Handbook price for " + containedItem.LocalizedName() + ": " + handbookPrice);
+#endif
                 }
 
                 totalPrice += handbookPrice;
             }
 
-            if (totalPrice > handbookPrice)
-            {
-                Singleton<LoggingUtil>.Instance.LogInfo("Total price for " + item.LocalizedName() + ": " + totalPrice);
-            }
+            Singleton<LoggingUtil>.Instance.LogDebug("Total handbook price for " + item.LocalizedName() + ": " + totalPrice);
 
             return totalPrice;
         }

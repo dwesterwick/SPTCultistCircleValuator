@@ -20,5 +20,14 @@ namespace SPTCultistCircleValuator.Helpers
 
             throw new InvalidOperationException("Cannot find TMP_Text for LocalizedText " + localizedText.gameObject.name);
         }
+
+        public static UnityEngine.Color ColorFromValue(this double value)
+        {
+            if (value > 400000) return UnityEngine.Color.green;
+            if (value > 200000) return UnityEngine.Color.yellow;
+            if (value > 0) return UnityEngine.Color.red;
+
+            return UnityEngine.Color.white;
+        }
     }
 }
