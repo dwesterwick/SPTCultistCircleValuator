@@ -19,7 +19,7 @@ namespace SPTCultistCircleValuator.Utils
 {
     internal class CultistCircleTextLabelUtil
     {
-        private const string CULTIST_CIRCLE_FORMATTED_TEXT = "CULTIST CIRCLE";
+        private const string CULTIST_CIRCLE_LOCALIZATION_KEY = "Hideout/CircleOfCultists";
 
         private FieldInfo _areaStashFieldInfo;
         private FieldInfo _sessionFieldInfo;
@@ -164,7 +164,7 @@ namespace SPTCultistCircleValuator.Utils
         {
             CultistCircleTextLabel = null;
 
-            LocalizedText? cultistCircleText = CultistCircleValuatorPlugin.LocalizedTextLocator.FindLocalizedText(CULTIST_CIRCLE_FORMATTED_TEXT);
+            LocalizedText? cultistCircleText = CultistCircleValuatorPlugin.LocalizedTextLocator.FindLocalizedText(CULTIST_CIRCLE_LOCALIZATION_KEY);
             if (cultistCircleText == null)
             {
                 Singleton<LoggingUtil>.Instance.LogError("Cannot find LocalizedText for Cultist Circle");
@@ -178,10 +178,7 @@ namespace SPTCultistCircleValuator.Utils
                 return false;
             }
 
-            if (OriginalText == string.Empty)
-            {
-                OriginalText = CultistCircleTextLabel.text;
-            }
+            OriginalText = CultistCircleTextLabel.text;
 
             return true;
         }

@@ -13,11 +13,11 @@ namespace SPTCultistCircleValuator.Components
             
         }
 
-        public LocalizedText? FindLocalizedText(string formattedText)
+        public LocalizedText? FindLocalizedText(string localizationKey)
         {
             foreach (LocalizedText localizedText in FindObjectsOfType<LocalizedText>())
             {
-                if (localizedText.FormattedText == formattedText)
+                if (localizedText.LocalizationKey == localizationKey)
                 {
                     return localizedText;
                 }
