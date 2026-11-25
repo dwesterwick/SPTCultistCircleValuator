@@ -70,6 +70,18 @@ namespace SPTCultistCircleValuator.Utils
 
         private async Task UpdateStashValueAsync(HideoutCircleOfCultistsScreen __instance, CancellationToken cancellationToken)
         {
+            if (_areaStashFieldInfo == null)
+            {
+                Singleton<LoggingUtil>.Instance.LogError("Could not find field _areaStash in HideoutCircleOfCultistsScreen");
+                return;
+            }
+
+            if (_sessionFieldInfo == null)
+            {
+                Singleton<LoggingUtil>.Instance.LogError("Could not find field _backEndSession in HideoutCircleOfCultistsScreen");
+                return;
+            }
+
             SetAdditionalText(": Calculating...");
 
             CompoundItem areaStash = (CompoundItem)_areaStashFieldInfo.GetValue(__instance);
@@ -79,7 +91,6 @@ namespace SPTCultistCircleValuator.Utils
             foreach (Item item in areaStash.Grids[0].Items)
             {
                 double itemPrice = GetHandbookPrice(item, session);
-
                 if ((itemPrice == 0) || (itemPrice == float.NaN))
                 {
                     Singleton<LoggingUtil>.Instance.LogWarning("Handbook price for " + item.LocalizedName() + " is not valid; trying trader price instead...");
@@ -128,6 +139,11 @@ namespace SPTCultistCircleValuator.Utils
                 {
                     await trader.RefreshAssortment(true, false);
                 }
+                if (trader._supplyData == null)
+                {
+                    Singleton<LoggingUtil>.Instance.LogError("Could not update _supplyData for " + trader.LocalizedName);
+                    continue;
+                }
 
                 double traderPrice = PriceCalculator.CalculateBasePriceForAllItems(item, 0, trader._supplyData, trader.Settings.BuyerUp);
                 Singleton<LoggingUtil>.Instance.LogDebug(trader.LocalizedName + " price for " + item.LocalizedName() + ": " + traderPrice);
@@ -153,7 +169,6 @@ namespace SPTCultistCircleValuator.Utils
                     Singleton<LoggingUtil>.Instance.LogError("More than one handbook entry found for " + containedItem.LocalizedName() + " (" + containedItem.TemplateId + ")");
                     return float.NaN;
                 }
-
                 if (handbookEntries.Any())
                 {
                     handbookPrice = handbookEntries.First().Price;
