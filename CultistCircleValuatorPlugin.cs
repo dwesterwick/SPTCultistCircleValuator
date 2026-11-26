@@ -5,7 +5,7 @@ using System;
 
 namespace SPTCultistCircleValuator
 {
-    [BepInPlugin("com.danw.cultistcirclevaluator", "CultistCircleValuator", "1.0.0")]
+    [BepInPlugin("com.danw.cultistcirclevaluator", "CultistCircleValuator", "1.0.1")]
     public class CultistCircleValuatorPlugin : BaseUnityPlugin
     {
         internal static Components.LocalizedTextLocatorComponent LocalizedTextLocator = null!;

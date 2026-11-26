@@ -56,6 +56,7 @@ namespace SPTCultistCircleValuator.Utils
 
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             Task updateStashValueTask = UpdateStashValueAsync(__instance, cancellationTokenSource.Token);
+            pendingUpdateStashValueTasks.Add(updateStashValueTask, cancellationTokenSource);
         }
 
         public void CancelAllPendingUpdateStashValueTasks()
